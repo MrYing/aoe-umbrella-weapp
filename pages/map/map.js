@@ -13,6 +13,12 @@ Page({
     wx.scanCode({
         success: (res) => {
             console.log(res) ;
+            wx.showModal({
+                title: "开锁密码",
+                content: "12435",
+                showCancel: false,
+                confirmText: "确定"
+            })
         }
     })
   },
@@ -55,12 +61,12 @@ Page({
 
   updateMarkers(latitude, longitude){
     let markers = [] ;
-    for(let i = 0; i < 5; i++){
+    for(let i = 1; i < 5; i++){
         let marker = {
             iconPath: "/resources/umbrella.png",
             id: i,
             latitude: latitude,
-            longitude: longitude + i,
+            longitude: longitude,
             width: 30,
             height: 30
         } ;
