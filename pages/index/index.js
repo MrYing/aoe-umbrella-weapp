@@ -11,6 +11,7 @@ Page({
     wx.navigateTo({
       url: '../logs/logs'
     })
+    
   },
   onLoad: function () {
     console.log('onLoad')
