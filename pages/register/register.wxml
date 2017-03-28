@@ -1,0 +1,7 @@
+<view>
+  <view class="register-img">
+    <image style="width: 100%; height: 200px;" src="/resources/banner.jpg"></image>
+  </view>
+  <view class="register-form">
+  </view>
+</view>
