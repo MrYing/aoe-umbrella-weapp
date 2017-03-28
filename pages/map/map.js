@@ -9,25 +9,35 @@ Page({
     console.log(e.markerId)
   },
   controltap(e) {
-    console.log(e.controlId)
-    wx.scanCode({
-        success: (res) => {
-            console.log(res) ;
-            wx.showModal({
-                title: "开锁密码",
-                content: "12435",
-                showCancel: false,
-                confirmText: "确定"
-            })
-        }
-    })
+    let controlId = e.controlId ;
+    console.log(controlId) ;
+    if("1" == controlId){
+        wx.navigateTo({
+            url: '../register/register'
+        })
+    }else if("2" == controlId){
+        wx.scanCode({
+            success: (res) => {
+                console.log(res) ;
+                wx.showModal({
+                    title: "开锁密码",
+                    content: "12435",
+                    showCancel: false,
+                    confirmText: "确定"
+                })
+            }
+        })
+    }
+    
   },
   
   onReady:function (e) {
+    console.log("map.onready")
     this.mapCtx = wx.createMapContext('map');
     this.mapCtx.moveToLocation();
   },
   onLoad: function (e) {
+    console.log("map.onload")
     let that = this ;
 
     this.mapCtx = wx.createMapContext('map');
@@ -89,13 +99,15 @@ Page({
   },
 
   updateControls(windowWidth,windowHeight){
+    let that = this ;
     let left = (+windowWidth) / 2 - 30;
     let top  = (windowHeight) - 100 ;
+
     this.setData({
         controls: [
             {
                 id: 1,
-                iconPath: '/resources/scan.png',
+                iconPath: '/resources/register.png',
                 position: {
                     left: left,
                     top: top,
@@ -106,5 +118,42 @@ Page({
             }
         ]
     }) ;
+
+    wx.login({
+        success: function (res) {
+            if(res.errMsg == "login:ok"){
+                wx.request({
+                    url: 'https://api.xiaofengketang.com/jersey/wx/jscode2session',
+                    data: {
+                        js_code: res.code
+                    },
+                    header: {
+                        'content-type': 'application/json'
+                    },
+                    method:"GET",
+                    success: function(ress) {
+                        wx.setStorageSync('openId', ress.data.openid) ;
+                        if(ress.errMsg == "request:ok" && ress.data.message_rest.type == "S"){
+                            that.setData({
+                                controls: [
+                                    {
+                                        id: 2,
+                                        iconPath: '/resources/scan.png',
+                                        position: {
+                                            left: left,
+                                            top: top,
+                                            width: 55,
+                                            height: 55
+                                        },
+                                        clickable: true
+                                    }
+                                ]
+                            }) ;
+                        }
+                    }
+                })
+            }
+        }
+    })
   }
 })

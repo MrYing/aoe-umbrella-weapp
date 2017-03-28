@@ -2,6 +2,25 @@
   <view class="register-img">
     <image style="width: 100%; height: 200px;" src="/resources/banner.jpg"></image>
   </view>
-  <view class="register-form">
-  </view>
+  
+  <form bindsubmit="formSubmit">
+        <view class="input-area">
+          <input id="username" name="username" maxlength='11' type="text" placeholder="手机号" bindchange="getPhoneNum"/>
+          <view class="smsCode">
+            <input id="smsCode" name="smsCode" maxlength='6' type="text" placeholder="验证码" bindchange="updateSmsCode"/>
+            <button bindtap = "getSmsCode" disabled="{{smsCodeDisabled}}" style="background-color:{{getSmsCodeBtnColor}}"   class="getSmsCodeBtn">{{getSmsCodeBtnTxt}}</button>
+          </view>
+          <input id="password" name="password" maxlength='20' type="password" placeholder="密码" bindchange="updateInputPassword"/>
+        </view>
+        <view class="btn-area">
+            <button  disabled="{{registDisabled}}" style="background-color:{{registBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{registBtnTxt}} </button>
+            <view class="txt-area">
+                 <navigator redirect url="../findpassword/index"><text class="forgot-password">忘记密码？</text></navigator>
+                 <navigator redirect url="../login/index"><text class="register">登录账号</text></navigator>
+            </view>
+        </view>
+    </form>
+
+
+
 </view>
