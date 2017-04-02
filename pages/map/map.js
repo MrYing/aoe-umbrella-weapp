@@ -9,10 +9,11 @@ Page({
     console.log(e.markerId)
   },
   controltap(e) {
+    let that = this ;
     let controlId = e.controlId ;
     console.log(controlId) ;
     if("1" == controlId){
-        wx.navigateTo({
+        wx.redirectTo({
             url: '../register/register'
         })
     }else if("2" == controlId){
@@ -26,6 +27,21 @@ Page({
                     confirmText: "确定"
                 })
             }
+        })
+    }else if("3" == controlId){
+        wx.createMapContext('map').moveToLocation();
+        wx.getLocation({
+            type: 'wgs84',
+            success: function(res) {
+                that.updateLocation(res.latitude, res.longitude) ;
+                that.updateMarkers(res.latitude, res.longitude) ;
+            }
+        }) ;
+    }else if("4" == controlId){
+        wx.showModal({
+            title: "充值",
+            content: "开发中，敬请期待",
+            showCancel: false
         })
     }
     
@@ -101,23 +117,31 @@ Page({
   updateControls(windowWidth,windowHeight){
     let that = this ;
     let left = (+windowWidth) / 2 - 30;
-    let top  = (windowHeight) - 100 ;
+    let top  = (+windowHeight) - 100 ;
 
-    this.setData({
-        controls: [
-            {
-                id: 1,
-                iconPath: '/resources/register.png',
-                position: {
-                    left: left,
-                    top: top,
-                    width: 55,
-                    height: 55
-                },
-                clickable: true
-            }
-        ]
-    }) ;
+    let resetControl = {
+        id: 3,
+        iconPath: '/resources/resetlocation.png',
+        position: {
+            left: 15,
+            top: top + 10,
+            width: 30,
+            height: 30
+        },
+        clickable: true
+    } ;
+
+    let recharge = {
+        id: 4,
+        iconPath: '/resources/recharge.png',
+        position: {
+            left: (+windowWidth) - (15 + 30),
+            top: top + 10,
+            width: 30,
+            height: 30
+        },
+        clickable: true
+    } ;
 
     wx.login({
         success: function (res) {
@@ -136,6 +160,8 @@ Page({
                         if(ress.errMsg == "request:ok" && ress.data.message_rest.type == "S"){
                             that.setData({
                                 controls: [
+                                    resetControl,
+                                    recharge,
                                     {
                                         id: 2,
                                         iconPath: '/resources/scan.png',
@@ -149,7 +175,42 @@ Page({
                                     }
                                 ]
                             }) ;
+                        }else{
+                            that.setData({
+                                controls: [
+                                    resetControl,
+                                    {
+                                        id: 1,
+                                        iconPath: '/resources/register.png',
+                                        position: {
+                                            left: left,
+                                            top: top,
+                                            width: 55,
+                                            height: 55
+                                        },
+                                        clickable: true
+                                    }
+                                ]
+                            }) ;
                         }
+                    },
+                    fail: function(ress){
+                        that.setData({
+                            controls: [
+                                resetControl,
+                                {
+                                    id: 1,
+                                    iconPath: '/resources/register.png',
+                                    position: {
+                                        left: left,
+                                        top: top,
+                                        width: 55,
+                                        height: 55
+                                    },
+                                    clickable: true
+                                }
+                            ]
+                        }) ;
                     }
                 })
             }

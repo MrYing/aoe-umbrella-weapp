@@ -61,11 +61,21 @@ Page({
                 if(ress.errMsg == "request:ok" && ress.data.message_rest &&ress.data.message_rest.type == "S"){
                     that.redirectTo(param);
                 }else{
+                    wx.showModal({
+                        title: '提示',
+                        showCancel:false,
+                        content: ress
+                    });
                     that.setregistData2();
                 }
                 that.setregistData2();
             },
             fail: function(ress){
+                wx.showModal({
+                    title: '提示',
+                    showCancel:false,
+                    content: ress
+                });
                 that.setregistData2();
             }
         })
