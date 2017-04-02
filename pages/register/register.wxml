@@ -14,10 +14,10 @@
         </view>
         <view class="btn-area">
             <button  disabled="{{registDisabled}}" style="background-color:{{registBtnBgBgColor}}"   formType="submit"  loading="{{btnLoading}}"> {{registBtnTxt}} </button>
-            <view class="txt-area">
+            <!-- <view class="txt-area">
                  <navigator redirect url="../findpassword/index"><text class="forgot-password">忘记密码？</text></navigator>
                  <navigator redirect url="../login/index"><text class="register">登录账号</text></navigator>
-            </view>
+            </view> -->
         </view>
     </form>
 
